@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>React AI Frontend</title>
+
+  <!-- React 18 CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- Babel (for JSX in browser) -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    input {
+      padding: 8px;
+      width: 300px;
+    }
+    button {
+      padding: 8px 12px;
+      margin-left: 10px;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const API_URL = "https://YOUR-RENDER-APP.onrender.com";
+
+    function App() {
+      const [query, setQuery] = React.useState("");
+      const [result, setResult] = React.useState(null);
+      const [loading, setLoading] = React.useState(false);
+
+      const send = async () => {
+        setLoading(true);
+        setResult(null);
+
+        try {
+          const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query })
+          });
+
+          const data = await res.json();
+          setResult(data);
+        } catch (err) {
+          setResult({ error: "Backend not reachable" });
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      return (
+        <div>
+          <h2>React AI Frontend</h2>
+
+          <input
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="Enter query"
+          />
+
+          <button onClick={send}>Send</button>
+
+          {loading && <p>Loading...</p>}
+
+          {result && (
+            <pre>{JSON.stringify(result, null, 2)}</pre>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+
+</body>
+</html>
