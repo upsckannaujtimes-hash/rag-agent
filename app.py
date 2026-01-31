@@ -126,3 +126,26 @@ if __name__ == "__main__":
     # Assuming you have a file called 'question.mp3' in the same folder
     # response = run_user_agent("question.mp3")
     # print(f"Bot: {response}")
+    # ... (keep all your existing code above) ...
+
+# --- WEB SERVER STARTER ---
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    # Get data from the user (Text or Audio File URL)
+    data = request.json
+    user_input = data.get('input') # Can be Hindi Text or File Path
+
+    # Run your RAG Logic
+    response_text = run_user_agent(user_input)
+    
+    return jsonify({"answer": response_text})
+
+if __name__ == '__main__':
+    # IMPORTANT FOR RENDER:
+    # '0.0.0.0' makes it accessible to the outside world
+    # Port 10000 is standard for Render free tier
+    app.run(host='0.0.0.0', port=10000)
