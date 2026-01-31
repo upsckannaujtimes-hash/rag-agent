@@ -7,7 +7,7 @@ from database import *
 from pdf_to_raw_text import *
 
 # --- CONFIGURATION ---
-api_key = os.getenv("GOOGLE_API_KEY") 
+api_key = os.getenv("AIzaSyCh3V8Wrw3Af1mIoiV17DcBrIimwpzBL_o") 
 if not api_key:
     print("Missing GOOGLE_API_KEY")
     exit()
